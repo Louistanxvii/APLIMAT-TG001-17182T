@@ -49,26 +49,48 @@ namespace aplimat_labs
             //Vector3 d = a - b;
             //Console.WriteLine("Vector c values : x" +d.x + "y :" + d.y + "z :" + d.z);
         }
-        private CubeMesh myCube = new CubeMesh(2, 1, 0);
-
+        // private CubeMesh myCube = new CubeMesh(2, 1, 0);
+        private CubeMesh myCube = new CubeMesh();
+        private Vector3 velocity = new Vector3(1,1,0);
         private void OpenGLControl_OpenGLDraw(object sender, SharpGL.SceneGraph.OpenGLEventArgs args)
         {
             OpenGL gl = args.OpenGL;
             gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
             gl.LoadIdentity();
 
-            gl.Translate(0.0f, 0.0f, -100.0f);
+            gl.Translate(0.0f, 0.0f, -40.0f);
 
-            CubeMesh myCube = new CubeMesh();
-            myCube.Position = new Vector3(Gaussian.Generate(0, 15), rng.GenerateInt(),0);
-            myCubes.Add(myCube);
+            myCube.Draw(gl);
+            
+            myCube.Position += velocity;
 
-            foreach(var cube in myCubes)
+            if (myCube.Position.x >= 30.0f)
             {
-                gl.Color(rgb.GenerateDouble(),rgb.GenerateDouble(),rgb.GenerateDouble());
-                cube.Draw(gl);
+                velocity.x = -1;
             }
-           
+            else if (myCube.Position.x <= -30.0f)
+            {
+                velocity.x = 1;
+            }
+
+            else if (myCube.Position.y >= 25.0f)
+            {
+                velocity.y = -1;       
+            }
+
+            else if (myCube.Position.y <= -25.0f)
+            {
+              
+                velocity.y = 1;            
+            }
+
+
+            //foreach(var cube in myCubes)
+            //{
+            //    gl.Color(rgb.GenerateDouble(),rgb.GenerateDouble(),rgb.GenerateDouble());
+            //    cube.Draw(gl);
+            //}
+
             //switch(rng.Generate())
             //{
             //    case 0:
